@@ -31,7 +31,7 @@ class selenium::node(
     mode    => '0644',
     content => predictable_pretty_json(merge($config_defaults,$config))
   }
-
+  ->
   selenium::server { 'node':
     selenium_args     => ['-role','node','-nodeConfig',$configfile],
     java_command      => $conf::java_command,

@@ -14,7 +14,7 @@ class selenium::hub(
     mode    => '0644',
     content => predictable_pretty_json($config)
   }
-
+  ->
   selenium::server { 'hub':
     selenium_args     => ['-role','hub','-hubConfig',$configfile],
     java_command      => $conf::java_command,
