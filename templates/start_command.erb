@@ -1,0 +1,20 @@
+<%=
+require 'shellwords'
+
+def esc(string)
+  Shellwords.escape(string)
+end
+
+jar = scope.lookupvar('selenium::common::jar::path')
+raise 'Could not determine jar path!' if jar.nil?
+
+[ '/usr/bin/env',
+  @env_vars.map { |k,v| "#{esc(k)}=#{esc(v)}" },
+  esc(@java_command),
+  @java_args.map { |a| esc(a) },
+  @system_properties.map { |k,v| "-D#{esc(k)}=#{esc(v)}" },
+  '-jar',
+  esc(jar),
+  @selenium_args.map { |a| esc(a) },
+].flatten.join(' ')
+-%>
