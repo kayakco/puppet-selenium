@@ -23,7 +23,7 @@ define selenium::server(
   }
 
   if $java_classname == undef {
-    warn('You should specify the name of the Java class you\'re using!')
+    warning('You should specify the name of the Java class you\'re using!')
   }else{
     include $java_classname
     Class[$java_classname] -> Bluepill::App["selenium-${title}"]

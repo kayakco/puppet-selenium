@@ -1,7 +1,23 @@
 require 'spec_helper'
 
 describe 'selenium::server' do
-  let :pre_condition do
+  context 'without java class' do
+    let :pre_condition do
+<<PRE
+class selenium::common::jar {
+ $path = '/s.jar'
+}
+PRE
+end
+    let :title do 'foo' end
+    let :params do {} end
+
+    it 'should warn about java class' do
+      should contain_bluepill__app('selenium-foo')
+    end
+  end
+  context 'with java class' do
+    let :pre_condition do
 <<PP
 class selenium::conf {
  $install_dir = '/i'
@@ -16,24 +32,24 @@ class selenium::common::jar {
 class myjava {
 }
 PP
-  end
-  let :title do 'foo' end
-  let :params do
-    {
-      :env_vars => { 'e2' => '2 e' },
-      :java_args => ['-Xmx800m'],
-      :system_properties => {'p.q' => 'r'},
-      :java_command => '/tmp/the java',
-      :java_classname => 'myjava',
-      :selenium_args => ['a','b','c']
-    }
-  end
-  it do
-    should include_class('myjava')
-    should contain_bluepill__app('selenium-foo').with({
-      :service_name => 'selenium-foo',
-      :logfile      => '/l/foo.log',
-      :content      => %r{<<CONFIG
+    end
+    let :title do 'foo' end
+    let :params do
+      {
+        :env_vars => { 'e2' => '2 e' },
+        :java_args => ['-Xmx800m'],
+        :system_properties => {'p.q' => 'r'},
+        :java_command => '/tmp/the java',
+        :java_classname => 'myjava',
+        :selenium_args => ['a','b','c']
+      }
+    end
+    it do
+      should include_class('myjava')
+      should contain_bluepill__app('selenium-foo').with({
+        :service_name => 'selenium-foo',
+        :logfile      => '/l/foo.log',
+        :content      => %r{<<CONFIG
 appname: selenium-foo
 user: u
 group: g
@@ -46,5 +62,6 @@ start_command = <<CMD
 -Dp.q=r -jar /s.jar a b c
 CMD}m,
     })
+    end
   end
 end
