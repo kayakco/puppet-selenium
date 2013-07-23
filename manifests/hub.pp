@@ -1,8 +1,10 @@
 class selenium::hub(
-  $java_args = [], # JVM args
+  $java_args         = [], # JVM args
   $system_properties = {}, # Java system properties
-  $env_vars  = {}, # Environment variables
-  $config    = {}, # Hub JSON configuration options.
+  $env_vars          = {}, # Environment variables
+  $config_hash       = {}, # Hub JSON configuration options.
+  $config_source     = undef,
+  $config_content    = undef,
 ){
   include selenium::common
 
@@ -12,7 +14,6 @@ class selenium::hub(
     owner   => $conf::user_name,
     group   => $conf::user_group,
     mode    => '0644',
-    content => predictable_pretty_json($config)
   }
   ->
   selenium::server { 'hub':
@@ -23,5 +24,19 @@ class selenium::hub(
     system_properties => $system_properties,
     env_vars          => $env_vars,
     require           => Class['Selenium::Common'],
+  }
+
+  if $config_source != undef {
+    File[$configfile]{
+      source => $config_source,
+    }
+  } elsif $config_content != undef {
+    File[$configfile]{
+      content => $config_content,
+    }
+  } else {
+    File[$configfile]{
+      content => predictable_pretty_json($config_hash,true),
+    }
   }
 }

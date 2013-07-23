@@ -22,14 +22,14 @@ PP
       :system_properties => { 'q' => 'p' },
       :java_args => ['-Xmx800m'],
       :env_vars => { 'foo' => '1' },
-      :config => { 'bar' => 'a', 'foo' => 3 },
+      :config_hash => { 'bar' => 'a', 'foo' => 3 },
     }
   end
   it do
     json = <<CONTENT
 {
   "bar": "a",
-  "foo": "3"
+  "foo": 3
 }
 CONTENT
     should contain_file('/i/conf/hubConfig.json').with({
@@ -47,4 +47,30 @@ CONTENT
       :env_vars => {'foo' => '1'},
     })
   end
+
+  context 'set config_source' do
+    let :params do
+      {
+        :config_source => 'aflag',
+        :config_content => 'bflag',
+        :config_hash => { 'c' => 'flag' }
+      }
+    end
+    it do
+      should contain_file('/i/conf/hubConfig.json').with_source('aflag')
+    end
+  end
+
+  context 'set config_content' do
+    let :params do
+      {
+        :config_content => 'bflag',
+        :config_hash => { 'c' => 'flag' }
+      }
+    end
+    it do
+      should contain_file('/i/conf/hubConfig.json').with_content('bflag')
+    end
+  end
+
 end

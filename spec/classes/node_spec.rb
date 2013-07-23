@@ -28,7 +28,7 @@ PP
         :system_properties => { 'q' => 'p' },
         :java_args => ['-Xmx800m'],
         :env_vars => {},
-        :config => { 'bar' => 'a', 'foo' => 3 },
+        :config_hash => { 'configuration' => {'bar' => 'a', 'foo' => 3 }},
       }
     end
     it do
@@ -37,9 +37,11 @@ PP
       should_not include_class('selenium::node::autologin')
       json = <<JSON
 {
-  "bar": "a",
-  "foo": "3",
-  "hub": "http://foo:4444/grid/register"
+  "configuration": {
+    "bar": "a",
+    "foo": 3,
+    "hub": "http://foo:4444/grid/register"
+  }
 }
 JSON
       should contain_file('/i/conf/nodeConfig.json').with({
@@ -78,5 +80,33 @@ JSON
       should include_class('selenium::node::autologin')
       should contain_selenium__server('node').with_env_vars({'DISPLAY' => ':1' })
     end
+  end
+
+  context 'set config_source' do
+    let :params do
+      {
+        :hub_host => 'h',
+        :config_source => 'aflag',
+        :config_content => 'bflag',
+        :config_hash => { 'c' => 'flag' }
+      }
+    end
+    it do
+      should contain_file('/i/conf/nodeConfig.json').with_source('aflag')
+    end
+  end
+
+  context 'set config_content' do
+    let :params do
+      {
+        :hub_host => 'h',
+        :config_content => 'bflag',
+        :config_hash => { 'c' => 'flag' }
+      }
+    end
+    it do
+      should contain_file('/i/conf/nodeConfig.json').with_content('bflag')
+    end
+
   end
 end

@@ -14,32 +14,47 @@ class selenium::node(
   $install_chromedriver = false,
   $chromedriver_version = '2.1',
 
-  $config               = {}, # JSON configuration options
+  $config_hash          = {},
+  $config_source        = undef,
+  $config_content       = undef,
 ){
   include selenium::common
 
   $hub = "http://${hub_host}:${hub_port}/grid/register"
-  $config_defaults = {
-    'hub' => $hub,
-  }
+  $config_file = "${conf::confdir}/nodeConfig.json"
 
-  $configfile = "${conf::confdir}/nodeConfig.json"
-  file { $configfile:
+  file { $config_file:
     ensure  => present,
     owner   => $conf::user_name,
     group   => $conf::user_group,
     mode    => '0644',
-    content => predictable_pretty_json(merge($config_defaults,$config))
   }
-  ->
+
+  if $config_source != undef {
+    File[$config_file] {
+      source  => $config_source,
+    }
+  } elsif $config_content != undef {
+    File[$config_file] {
+      content => $config_content,
+    }
+  } else {
+    $cfg_defaults = { 'configuration' => { 'hub' => $hub } }
+    $final_hash = deep_merge($cfg_defaults,$config_hash)
+
+    File[$config_file] {
+      content => predictable_pretty_json($final_hash,true),
+    }
+  }
+
   selenium::server { 'node':
-    selenium_args     => ['-role','node','-nodeConfig',$configfile],
+    selenium_args     => ['-role','node','-nodeConfig',$config_file],
     java_command      => $conf::java_command,
     java_classname    => $conf::java_classname,
     java_args         => $java_args,
     system_properties => $system_properties,
     env_vars          => merge({ 'DISPLAY' => ':0' }, $env_vars ),
-    require           => Class['Selenium::Common']
+    require           => [Class['Selenium::Common'],File[$config_file]]
   }
 
   if $install_chromedriver {
