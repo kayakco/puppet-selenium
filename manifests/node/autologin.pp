@@ -2,6 +2,10 @@ class selenium::node::autologin {
 
   include selenium::conf
 
+  package { 'lightdm':
+    ensure => installed,
+  }
+
   ini_setting { 'guest':
     setting => 'autologin-guest',
     value   => false,
@@ -23,9 +27,10 @@ class selenium::node::autologin {
   }
 
   Ini_Setting['guest','user','user-timeout','session'] {
-    ensure => present,
-    path   => '/etc/lightdm/lightdm.conf',
+    ensure  => present,
+    path    => '/etc/lightdm/lightdm.conf',
     section => 'SeatDefaults',
+    require => Package['lightdm'],
   }
 
 }

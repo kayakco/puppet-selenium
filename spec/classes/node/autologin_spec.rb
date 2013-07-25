@@ -24,6 +24,7 @@ PP
         :setting => "autologin-#{name}",
         :value   => val,
       }))
+      should contain_package('lightdm')
     end
   end
 end
