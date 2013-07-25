@@ -5,7 +5,7 @@ class selenium::conf(
   $user_name      = 'selenium',
   $user_options   = {},
   $java_command   = 'java',
-  $java_classname = undef,
+  $java_classname = 'java',
   $install_dir    = '/usr/local/selenium',
 ){
   $user_group   = pick($user_options['group'],$user_name)

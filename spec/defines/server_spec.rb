@@ -10,10 +10,11 @@ class selenium::common::jar {
 PRE
 end
     let :title do 'foo' end
-    let :params do {} end
+    let :params do { :java_classname => 'UNDEFINED' } end
 
     it 'should warn about java class' do
       should contain_bluepill__app('selenium-foo')
+      should_not include_class('java')
     end
   end
   context 'with java class' do
