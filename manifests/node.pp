@@ -54,7 +54,8 @@ class selenium::node(
     java_args         => $java_args,
     system_properties => $system_properties,
     env_vars          => merge({ 'DISPLAY' => ':0' }, $env_vars ),
-    require           => [Class['Selenium::Common'],File[$config_file]]
+    subscribe         => File[$config_file],
+    require           => Class['Selenium::Common']
   }
 
   if $install_chromedriver {

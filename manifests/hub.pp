@@ -23,6 +23,7 @@ class selenium::hub(
     java_args         => $java_args,
     system_properties => $system_properties,
     env_vars          => $env_vars,
+    subscribe         => File[$configfile],
     require           => Class['Selenium::Common'],
   }
 
