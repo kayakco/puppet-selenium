@@ -10,14 +10,13 @@ describe 'selenium::node::vnc' do
   }
 PP
 
-  context 'do not disable screenlock, no vnc password' do
+  context 'do not disable screenlock' do
     let(:pre_condition) do
 <<PP
 #{CONF_PC}
 
   class selenium::node {
     $disable_screen_lock = false
-    $vnc_password = undef
   }
   include selenium::node
 PP
@@ -39,7 +38,7 @@ PP
       should contain_file('/s/onlogin').with(file_defaults.merge({
         :ensure => 'file',
         :mode => '0755',
-        :content => /Disabling VNC password prompt.*Not disabling screen lock/m
+        :content => /Not disabling screen lock/m
       }))
 
       should contain_file('/s/.config/autostart/onlogin.desktop').with(file_defaults.merge({
@@ -57,7 +56,6 @@ PP
 
   class selenium::node {
     $disable_screen_lock = true
-    $vnc_password = undef
   }
   include selenium::node
 PP
@@ -67,20 +65,4 @@ PP
     end
   end
 
-  context 'vnc password' do
-    let(:pre_condition) do
-<<PP
-#{CONF_PC}
-
-  class selenium::node {
-    $disable_screen_lock = false
-    $vnc_password = 'frogs'
-  }
-  include selenium::node
-PP
-    end
-    it do
-      should contain_file('/s/onlogin').with_content(/Setting VNC password to "frogs".*encoded: "ZnJvZ3M="/m)
-    end
-  end
 end

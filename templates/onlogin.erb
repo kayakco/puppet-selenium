@@ -12,36 +12,25 @@ echo "Enabling VNC server"
 gsettings set org.gnome.Vino enabled true
 gsettings set org.gnome.Vino prompt-enabled false
 
-gconftool-2 -s /desktop/gnome/remote_access/authentication_methods \
-  -t list --list-type string '[vnc]'
-gconftool-2 -s /desktop/gnome/remote_access/icon_visibility \
-  -t string never
-gconftool-2 -s /desktop/gnome/remote_access/enabled \
-  -t bool true
+schema="/desktop/gnome/remote_access"
+gconftool-2 -s $schema/icon_visibility -t string never
+gconftool-2 -s $schema/enabled -t bool true
+gconftool-2 -s $schema/prompt_enabled -t bool false
 
-<% if [nil,'','undef',:undef,:nil].include? @password -%>
-echo "Disabling VNC password prompt"
-gconftool-2 -s /desktop/gnome/remote_access/prompt_enabled \
-  -t bool false
-gconftool-2 -s /desktop/gnome/remote_access/vnc_password \
-  -t string never
-
-<% else -%>
-<% encoded = Base64.encode64(@password).chomp -%>
-echo 'Setting VNC password to <%= @password.inspect %>'
-echo 'base64 encoded: <%= encoded.inspect %>)'
-gconftool-2 -s /desktop/gnome/remote_access/prompt_enabled \
-  -t bool true
-gconftool-2 -s /desktop/gnome/remote_access/vnc_password \
-  -t string <%= encoded.inspect %>
-<% end -%>
+gconftool-2 -s $schema/vnc_password -t string never
+gconftool-2 -s $schema/authentication_methods -t list --list-type string '[none]'
 
 <% if @disable_screen_lock -%>
+
 echo "Disabling screen lock"
+
 gsettings set org.gnome.desktop.screensaver lock-enabled false
 gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
+
 <% else -%>
-echo "Not disabling screen lock
+
+echo "Not disabling screen lock"
+
 <% end -%>
 
 echo "VNC setup finished"

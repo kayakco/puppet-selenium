@@ -9,7 +9,6 @@ class selenium::node(
   $disable_screen_lock  = false,
   $autologin            = false,
   $enable_vnc           = false,
-  $vnc_password         = undef,
 
   $install_chromedriver = false,
   $chromedriver_version = '2.1',

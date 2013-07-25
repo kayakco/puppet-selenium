@@ -3,7 +3,6 @@ class selenium::node::vnc{
   include selenium::conf
 
   $disable_screen_lock = $node::disable_screen_lock
-  $password            = $node::vnc_password
   $home                = $conf::user_homedir
   $logdir              = $selenium::conf::logdir
   $onlogin_script      = "${home}/onlogin"
