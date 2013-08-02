@@ -16,10 +16,11 @@ define selenium::server(
   $pidfile = "${conf::rundir}/${title}.pid"
 
   bluepill::app { $appname:
-    content      => template('selenium/bluepill.conf.erb'),
-    service_name => $appname,
-    logfile      => $logfile,
-    require      => [User[$conf::user_name],File[$conf::install_dir]],
+    content           => template('selenium/bluepill.conf.erb'),
+    service_name      => $appname,
+    logfile           => $logfile,
+    logrotate_options => { 'copytruncate' => true },
+    require           => [User[$conf::user_name],File[$conf::install_dir]],
   }
 
   if $java_classname == 'UNDEFINED' {

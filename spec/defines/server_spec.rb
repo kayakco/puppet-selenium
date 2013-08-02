@@ -17,6 +17,7 @@ end
       should_not include_class('java')
     end
   end
+
   context 'with java class' do
     let :pre_condition do
 <<PP
@@ -34,6 +35,7 @@ class myjava {
 }
 PP
     end
+
     let :title do 'foo' end
     let :params do
       {
@@ -45,11 +47,13 @@ PP
         :selenium_args => ['a','b','c']
       }
     end
+
     it do
       should include_class('myjava')
       should contain_bluepill__app('selenium-foo').with({
         :service_name => 'selenium-foo',
         :logfile      => '/l/foo.log',
+        :logrotate_options => { 'copytruncate' => true },
         :content      => %r{<<CONFIG
 appname: selenium-foo
 user: u
@@ -64,5 +68,6 @@ start_command = <<CMD
 CMD}m,
     })
     end
+
   end
 end
