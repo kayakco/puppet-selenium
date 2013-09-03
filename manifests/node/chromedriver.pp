@@ -1,3 +1,4 @@
+# Installs chromedriver on a node
 class selenium::node::chromedriver(
   $version = $selenium::node::chromedriver_version,
 ){

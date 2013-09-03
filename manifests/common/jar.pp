@@ -1,3 +1,4 @@
+# Installs selenium server standalone jar
 class selenium::common::jar{
   include selenium::conf
 

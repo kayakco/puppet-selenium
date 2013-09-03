@@ -1,3 +1,4 @@
+# Creates Selenium user
 class selenium::common::user{
   include selenium::conf
 
