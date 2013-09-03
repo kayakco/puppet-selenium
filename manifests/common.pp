@@ -1,8 +1,9 @@
+# Logic required by node and hub
 class selenium::common{
   include selenium::conf
   include selenium::common::jar
 
-  ensure_supported({'Ubuntu' => ['12']},true)
+  ensure_supported({'Ubuntu' => ['12'],'CentOS' => ['6']},true)
 
   if $conf::manage_user {
     include selenium::common::user

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'selenium::node' do
   let :facts do
-    { :r9util_download_curl_version => '2' }
+    { :r9util_download_curl_version => '2',:operatingsystem => 'Ubuntu' }
   end
   let :pre_condition do
 <<PP
@@ -22,8 +22,6 @@ PP
     let :params do
       {
         :hub_host => 'foo',
-        :enable_vnc => false,
-        :autologin => false,
         :install_chromedriver => false,
         :system_properties => { 'q' => 'p' },
         :java_args => ['-Xmx800m'],
@@ -33,8 +31,7 @@ PP
     end
     it do
       should_not include_class('selenium::node::chromedriver')
-      should_not include_class('selenium::node::vnc')
-      should_not include_class('selenium::node::autologin')
+      should include_class('selenium::node::display')
       json = <<JSON
 {
   "configuration": {
@@ -68,16 +65,13 @@ JSON
     let :params do
       {
         :hub_host => 'foo',
-        :enable_vnc => true,
-        :autologin => true,
         :install_chromedriver => true,
         :env_vars => { 'DISPLAY' => ':1' }
       }
     end
     it do
+      should include_class('selenium::node::display')
       should include_class('selenium::node::chromedriver')
-      should include_class('selenium::node::vnc')
-      should include_class('selenium::node::autologin')
       should contain_selenium__server('node').with_env_vars({'DISPLAY' => ':1' })
     end
   end

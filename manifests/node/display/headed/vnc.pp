@@ -1,10 +1,10 @@
-class selenium::node::vnc{
+class selenium::node::display::headed::vnc{
 
   include selenium::conf
 
-  $disable_screen_lock = $node::disable_screen_lock
+  $disable_screen_lock = $headed::disable_screen_lock
   $home                = $conf::user_homedir
-  $logdir              = $selenium::conf::logdir
+  $logdir              = $conf::logdir
   $onlogin_script      = "${home}/onlogin"
 
   package { 'gnome-user-share':

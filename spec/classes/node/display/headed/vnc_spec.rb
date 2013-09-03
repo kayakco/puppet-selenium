@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'selenium::node::vnc' do
+describe 'selenium::node::display::headed::vnc' do
   CONF_PC = <<PP
   class selenium::conf{
     $user_homedir = '/s'
@@ -15,10 +15,10 @@ PP
 <<PP
 #{CONF_PC}
 
-  class selenium::node {
+  class selenium::node::display::headed {
     $disable_screen_lock = false
   }
-  include selenium::node
+  include selenium::node::display::headed
 PP
     end
     it do
@@ -54,10 +54,10 @@ PP
 <<PP
 #{CONF_PC}
 
-  class selenium::node {
+  class selenium::node::display::headed {
     $disable_screen_lock = true
   }
-  include selenium::node
+  include selenium::node::display::headed
 PP
     end
     it do

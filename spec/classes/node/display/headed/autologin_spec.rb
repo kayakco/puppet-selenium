@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'selenium::node::autologin' do
+describe 'selenium::node::display::headed::autologin' do
   let :pre_condition do
 <<PP
 class selenium::conf {

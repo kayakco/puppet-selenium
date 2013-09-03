@@ -1,4 +1,4 @@
-class selenium::node::autologin {
+class selenium::node::display::headed::autologin {
 
   include selenium::conf
 

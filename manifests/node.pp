@@ -6,10 +6,6 @@ class selenium::node(
   $system_properties = {},
   $env_vars      = {},
 
-  $disable_screen_lock  = false,
-  $autologin            = false,
-  $enable_vnc           = false,
-
   $install_chromedriver = false,
   $chromedriver_version = '2.1',
 
@@ -18,6 +14,7 @@ class selenium::node(
   $config_content       = undef,
 ){
   include selenium::common
+  include selenium::node::display
 
   $hub = "http://${hub_host}:${hub_port}/grid/register"
   $config_file = "${conf::confdir}/nodeConfig.json"
@@ -59,11 +56,5 @@ class selenium::node(
 
   if $install_chromedriver {
     include selenium::node::chromedriver
-  }
-  if $autologin {
-    include selenium::node::autologin
-  }
-  if $enable_vnc {
-    include selenium::node::vnc
   }
 }
