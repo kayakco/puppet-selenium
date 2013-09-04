@@ -5,9 +5,9 @@ class selenium::node::display::headless::xvfb{
     'Ubuntu' => 'xvfb'
   }
 
-  $xvfb = distro_lookup($package_names)
+  $package = distro_lookup($package_names)
 
-  package { 'xvfb':
+  package { $package:
     ensure => installed,
   }
 }

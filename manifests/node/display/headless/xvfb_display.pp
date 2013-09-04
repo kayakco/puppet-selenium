@@ -14,6 +14,7 @@ define selenium::node::display::headless::xvfb_display(
     start_command => $command,
     service_name  => "xvfb-${title}",
     rotate_logs   => true,
+    require       => Package[$xvfb::package]
   }
 
   if $vnc {
