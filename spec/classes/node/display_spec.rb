@@ -11,10 +11,8 @@ describe 'selenium::node::display' do
     end
 
     it do
-      expect {
-        should include_class('selenium::node::display::headless')
-        should_not include_class('selenium::node::display::headed')
-      }.to raise_error(Puppet::Error,/not yet implemented/)
+      should include_class('selenium::node::display::headless')
+      should_not include_class('selenium::node::display::headed')
     end
   end
 

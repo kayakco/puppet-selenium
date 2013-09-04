@@ -1,18 +1,16 @@
 name    'kayak-selenium'
 version '0.0.1'
-source 'UNKNOWN'
+source 'https://github.com/kayakco/puppet-selenium'
 author 'kayak'
 license 'Apache License, Version 2.0'
-summary 'UNKNOWN'
-description 'UNKNOWN'
-project_page 'UNKNOWN'
+summary 'Selenium grid'
+description 'Advanced management of Selenium grid nodes'
+project_page 'https://github.com/kayakco/puppet-selenium'
 
-## Add dependencies, if any:
 dependency 'puppetlabs/stdlib', '>= 3.2.0'
 dependency 'puppetlabs/inifile', '>= 0.10.1'
 dependency 'puppetlabs/java', '>= 0.2.0'
-# Uncomment when r9util is published on the forge.
-# dependency 'kayak/r9util', '>= 0.0.1'
+dependency 'stahnma/epel', '>= 0.0.5'
+dependency 'kayak/r9util', '>= 0.0.3'
 # Uncomment when bluepill is published on the forge.
 # dependency 'kayak/bluepill', '>= 0.0.1'
-# puppetlabs/inifile
