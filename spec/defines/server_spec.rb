@@ -50,23 +50,18 @@ PP
 
     it do
       should include_class('myjava')
-      should contain_bluepill__app('selenium-foo').with({
+      start_command = <<CMD
+/usr/bin/env e2=2\\ e /tmp/the\\ java -Xmx800m \
+-Dp.q=r -jar /s.jar a b c
+CMD
+      should contain_bluepill__simple_app('selenium-foo').with({
         :service_name => 'selenium-foo',
         :logfile      => '/l/foo.log',
         :logrotate_options => { 'copytruncate' => true },
-        :content      => %r{<<CONFIG
-appname: selenium-foo
-user: u
-group: g
-pidfile: /r/foo.pid
-logfile: /l/foo.log
-CONFIG
-
-start_command = <<CMD
-/usr/bin/env e2=2\\ e /tmp/the\\ java -Xmx800m \
--Dp.q=r -jar /s.jar a b c
-CMD}m,
-    })
+        :user         => 'u',
+        :group        => 'g',
+        :pidfile      => '/r/foo.pid',
+      })
     end
 
   end

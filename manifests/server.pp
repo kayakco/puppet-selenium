@@ -15,8 +15,11 @@ define selenium::server(
   $logfile = "${conf::logdir}/${title}.log"
   $pidfile = "${conf::rundir}/${title}.pid"
 
-  bluepill::app { $appname:
-    content           => template('selenium/bluepill.conf.erb'),
+  bluepill::simple_app { $appname:
+    start_command     => $cmd,
+    user              => $conf::user_name,
+    group             => $conf::user_group,
+    pidfile           => $pidfile,
     service_name      => $appname,
     logfile           => $logfile,
     logrotate_options => { 'copytruncate' => true },
