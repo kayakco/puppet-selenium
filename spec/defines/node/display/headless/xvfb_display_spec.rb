@@ -34,6 +34,7 @@ describe 'selenium::node::display::headless::xvfb_display' do
         :user    => 'u',
         :group   => 'g',
         :logfile => '/l/xvfb-foo',
+        :pidfile => '/r/xvfb-foo.pid',
         :start_command => 'Xvfb :99 -nolisten tcp -fbdir /r/xvfb -screen 0 10x20x23',
       })
       should include_class('selenium::node::display::headless::x11vnc')
@@ -41,6 +42,7 @@ describe 'selenium::node::display::headless::xvfb_display' do
         :user    => 'u',
         :group   => 'g',
         :logfile => '/l/x11vnc-foo',
+        :pidfile => '/r/x11vnc-foo.pid',
         :start_command => 'x11vnc -forever -display :99  ',
       })
     end

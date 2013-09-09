@@ -21,6 +21,7 @@ define selenium::node::display::headless::xvfb_display(
     user          => $conf::user_name,
     group         => $conf::user_group,
     logfile       => "${conf::logdir}/xvfb-${title}",
+    pidfile       => "${conf::rundir}/xvfb-${title}.pid",
     rotate_logs   => true,
     require       => [Package[$xvfb::package],File[$fbdir]]
   }
@@ -54,6 +55,7 @@ define selenium::node::display::headless::xvfb_display(
       user          => $conf::user_name,
       group         => $conf::user_group,
       logfile       => "${conf::logdir}/x11vnc-${title}",
+      pidfile       => "${conf::rundir}/x11vnc-${title}.pid",
       rotate_logs   => true,
     }
   }
