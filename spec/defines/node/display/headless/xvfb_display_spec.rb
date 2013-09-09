@@ -11,6 +11,7 @@ describe 'selenium::node::display::headless::xvfb_display' do
       $user_group = 'g'
       $confdir    = '/etc/se'
       $logdir     = '/l'
+      $rundir     = '/r'
     }
     PP
   end
@@ -33,7 +34,7 @@ describe 'selenium::node::display::headless::xvfb_display' do
         :user    => 'u',
         :group   => 'g',
         :logfile => '/l/xvfb-foo',
-        :start_command => 'Xvfb :99 -nolisten tcp -fbdir /var/run -screen 0 10x20x23',
+        :start_command => 'Xvfb :99 -nolisten tcp -fbdir /r/xvfb -screen 0 10x20x23',
       })
       should include_class('selenium::node::display::headless::x11vnc')
       should contain_bluepill__simple_app('x11vnc-foo').with({

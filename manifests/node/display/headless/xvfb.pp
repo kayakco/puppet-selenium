@@ -1,5 +1,7 @@
 class selenium::node::display::headless::xvfb{
 
+  include selenium::conf
+
   $package_names = {
     'CentOS' => 'xorg-x11-server-Xvfb',
     'Ubuntu' => 'xvfb'
@@ -9,5 +11,14 @@ class selenium::node::display::headless::xvfb{
 
   package { $package:
     ensure => installed,
+  }
+
+  $fbdir = "${conf::rundir}/xvfb"
+
+  file { "${conf::rundir}/xvfb":
+    ensure => directory,
+    owner  => $conf::user_name,
+    group  => $conf::user_group,
+    mode   => '0755',
   }
 }

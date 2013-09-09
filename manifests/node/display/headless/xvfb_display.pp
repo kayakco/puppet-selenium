@@ -11,6 +11,8 @@ define selenium::node::display::headless::xvfb_display(
   include selenium::conf
   include selenium::node::display::headless::xvfb
 
+  $fbdir = $xvfb::fbdir
+
   $command = template('selenium/xvfb_command.erb')
 
   bluepill::simple_app { "xvfb-${title}":
@@ -20,7 +22,7 @@ define selenium::node::display::headless::xvfb_display(
     group         => $conf::user_group,
     logfile       => "${conf::logdir}/xvfb-${title}",
     rotate_logs   => true,
-    require       => Package[$xvfb::package]
+    require       => [Package[$xvfb::package],File[$fbdir]]
   }
 
   if $vnc {
