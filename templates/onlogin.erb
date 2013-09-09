@@ -16,7 +16,7 @@ gsettings set org.gnome.Vino prompt-enabled false
 
 echo "Setting vnc password..."
 
-gsettings set org.gnome.Vino authentication-methods "['password']"
+gsettings set org.gnome.Vino authentication-methods "['vnc']"
 gsettings set org.gnome.Vino vnc-password <%= Base64.encode64(@password).chomp.inspect %>
 
 <% else -%>
