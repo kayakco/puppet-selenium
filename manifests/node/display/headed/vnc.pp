@@ -3,6 +3,9 @@ class selenium::node::display::headed::vnc{
   include selenium::conf
 
   $disable_screen_lock = $headed::disable_screen_lock
+  $use_password        = $headed::use_vnc_password
+  $password            = $headed::vnc_password
+  $view_only           = $headed::vnc_view_only
   $home                = $conf::user_homedir
   $logdir              = $conf::logdir
   $onlogin_script      = "${home}/onlogin"

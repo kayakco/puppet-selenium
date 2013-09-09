@@ -12,13 +12,34 @@ echo "Enabling VNC server"
 gsettings set org.gnome.Vino enabled true
 gsettings set org.gnome.Vino prompt-enabled false
 
-schema="/desktop/gnome/remote_access"
-gconftool-2 -s $schema/icon_visibility -t string never
-gconftool-2 -s $schema/enabled -t bool true
-gconftool-2 -s $schema/prompt_enabled -t bool false
+<% if @use_password -%>
 
-gconftool-2 -s $schema/vnc_password -t string never
-gconftool-2 -s $schema/authentication_methods -t list --list-type string '[none]'
+echo "Setting vnc password..."
+
+gsettings set org.gnome.Vino authentication-methods "['password']"
+gsettings set org.gnome.Vino vnc-password <%= Base64.encode64(@password).chomp.inspect %>
+
+<% else -%>
+
+echo "Not setting a VNC password"
+
+gsettings set org.gnome.Vino authentication-methods "['none']"
+
+<% end -%>
+
+<% if @view_only -%>
+
+echo "Making VNC server view-only"
+
+gsettings set org.gnome.Vino view-only "true"
+
+<% else -%>
+
+echo "Not making VNC server view-only"
+
+gsettings set org.gnome.Vino view-only "false"
+
+<% end -%>
 
 <% if @disable_screen_lock -%>
 
