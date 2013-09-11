@@ -1,3 +1,10 @@
-class selenium{
-  fail('Please use the selenium::hub or selenium::node class')
+class selenium(
+  $hub_host,
+){
+
+  include selenium::node
+
+  if member([$::fqdn,$::hostname],$hub_host){
+    include selenium::hub
+  }
 }

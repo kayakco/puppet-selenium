@@ -1,10 +1,10 @@
 class selenium::node(
-  $hub_host,
-  $hub_port = '4444',
+  $hub_host             = $selenium::hub_host,
+  $hub_port             = '4444',
 
-  $java_args     = [],
-  $system_properties = {},
-  $env_vars      = {},
+  $java_args            = [],
+  $system_properties    = {},
+  $env_vars             = {},
 
   $install_chromedriver = false,
   $chromedriver_version = '2.1',
