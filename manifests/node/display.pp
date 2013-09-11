@@ -1,5 +1,5 @@
 class selenium::node::display(
-  $headless         = false,
+  $headless         = true,
   $enable_vnc       = false,
   $use_vnc_password = false,
   $vnc_password     = 'changeme',
