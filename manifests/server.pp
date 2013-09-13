@@ -22,7 +22,10 @@ define selenium::server(
     pidfile           => $pidfile,
     service_name      => $appname,
     logfile           => $logfile,
-    logrotate_options => { 'copytruncate' => true },
+    logrotate_options => {
+      'copytruncate' => true,
+      'rotate'       => 2
+    },
     require           => [User[$conf::user_name],File[$conf::install_dir]],
   }
 
