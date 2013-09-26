@@ -57,7 +57,7 @@ CMD
       should contain_bluepill__simple_app('selenium-foo').with({
         :service_name => 'selenium-foo',
         :logfile      => '/l/foo.log',
-        :logrotate_options => { 'copytruncate' => true, 'rotate' => 2 },
+        :logrotate_options => { 'copytruncate' => true, 'rotate' => '2' },
         :user         => 'u',
         :group        => 'g',
         :pidfile      => '/r/foo.pid',
