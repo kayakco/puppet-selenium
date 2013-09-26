@@ -57,4 +57,6 @@ class selenium::node(
   if $install_chromedriver {
     include selenium::node::chromedriver
   }
+
+  Class['Selenium::Node::Display'] -> Selenium::Server['node']
 }
