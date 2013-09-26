@@ -7,6 +7,7 @@ class selenium::node::display::headless(
   $vnc_password     = $selenium::node::display::vnc_password,
   $use_vnc_password = $selenium::node::display::use_vnc_password,
   $vnc_view_only    = $selenium::node::display::vnc_view_only,
+  $vnc_port         = $selenium::node::display::vnc_port,
 ){
   include selenium::node::display::headless::xvfb
 
@@ -18,5 +19,6 @@ class selenium::node::display::headless(
     vnc           => $enable_vnc,
     vnc_password  => $vnc_password,
     vnc_view_only => $vnc_view_only,
+    vnc_port      => $vnc_port,
   }
 }

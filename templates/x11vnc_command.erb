@@ -1,0 +1,5 @@
+<%
+@viewarg = @vnc_view_only ? '-viewonly' : ''
+@pwarg   = @pwfile ? "-passwdfile #{@pwfile}" : ''
+-%>
+x11vnc -forever -display :<%= @display %> -rfbport <%= @vnc_port %> <%= @viewarg %> <%= @pwarg %>

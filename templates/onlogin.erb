@@ -12,6 +12,19 @@ echo "Enabling VNC server"
 gsettings set org.gnome.Vino enabled true
 gsettings set org.gnome.Vino prompt-enabled false
 
+<% if @port.nil? -%>
+
+echo "Not setting VNC port"
+
+<% else -%>
+
+echo "Using VNC port <%= @port %>"
+
+gsettings set org.gnome.Vino alternative-port <%= @port %>
+gsettings set org.gnome.Vino use-alternative-port true
+
+<% end -%>
+
 <% if @use_password -%>
 
 echo "Setting vnc password..."

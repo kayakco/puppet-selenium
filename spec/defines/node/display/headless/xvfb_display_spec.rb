@@ -43,7 +43,7 @@ describe 'selenium::node::display::headless::xvfb_display' do
         :group   => 'g',
         :logfile => '/l/x11vnc-foo',
         :pidfile => '/r/x11vnc-foo.pid',
-        :start_command => 'x11vnc -forever -display :99  ',
+        :start_command => 'x11vnc -forever -display :99 -rfbport 5900  ',
       })
     end
   end
@@ -79,6 +79,20 @@ describe 'selenium::node::display::headless::xvfb_display' do
         :content => 'foobar',
       })
     end
+  end
+
+  context 'with vnc (non-standard port)' do
+    let :title do 'foo' end
+    let :params do
+      {:vnc => true,:vnc_port => 5908}
+    end
+
+    it do
+      should contain_bluepill__simple_app('x11vnc-foo').with({
+        :start_command => /\-rfbport 5908\s/,
+      })
+    end
+
   end
 
   context 'no vnc' do

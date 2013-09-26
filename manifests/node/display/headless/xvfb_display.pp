@@ -6,6 +6,7 @@ define selenium::node::display::headless::xvfb_display(
   $vnc           = false,
   $vnc_password  = undef,
   $vnc_view_only = false,
+  $vnc_port      = 5900,
 ){
 
   include selenium::conf
@@ -31,7 +32,6 @@ define selenium::node::display::headless::xvfb_display(
 
     if $vnc_password {
       $pwfile   = "${conf::confdir}/x11vnc-${title}-password"
-      $pwarg    = "-passwdfile ${pwfile}"
 
       file { $pwfile:
         owner   => $conf::user_name,
@@ -39,16 +39,10 @@ define selenium::node::display::headless::xvfb_display(
         mode    => '0400',
         content => $vnc_password,
       }
-    }else{
-      $pwarg = ''
     }
 
-    $viewarg = $vnc_view_only ? {
-      true    => '-viewonly',
-      default => '',
-    }
+    $vnc_cmd = template('selenium/x11vnc_command.erb')
 
-    $vnc_cmd = "x11vnc -forever -display :${display} ${viewarg} ${pwarg}"
     bluepill::simple_app { "x11vnc-${title}":
       start_command => $vnc_cmd,
       service_name  => "x11vnc-${title}",
