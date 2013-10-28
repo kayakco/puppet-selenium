@@ -22,6 +22,7 @@ define selenium::server(
     pidfile           => $pidfile,
     service_name      => $appname,
     logfile           => $logfile,
+    rotate_logs       => true,
     logrotate_options => {
       'copytruncate' => true,
       'rotate'       => 2
