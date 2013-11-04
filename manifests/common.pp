@@ -19,4 +19,7 @@ class selenium::common{
     group  => $conf::user_group,
   }
 
+  if $conf::cleanup {
+    include selenium::cleanup
+  }
 }
