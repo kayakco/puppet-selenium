@@ -26,8 +26,9 @@ define selenium::server(
     logfile           => $logfile,
     rotate_logs       => true,
     logrotate_options => {
-      'copytruncate' => true,
-      'rotate'       => 2
+      'copytruncate'  => true,
+      'rotate'        => 2,
+      'delaycompress' => false,
     },
     config_content    => $bluepill_cfg_content,
     config_source     => $bluepill_cfg_source,
