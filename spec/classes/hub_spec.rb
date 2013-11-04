@@ -73,4 +73,18 @@ CONTENT
     end
   end
 
+  context 'pass blupill_cfg_content' do
+    let :params do { :bluepill_cfg_content => 'foo' } end
+    it do
+      should contain_selenium__server('hub').with_bluepill_cfg_content('foo')
+    end
+  end
+
+  context 'pass blupill_cfg_source' do
+    let :params do { :bluepill_cfg_source => 'foo' } end
+    it do
+      should contain_selenium__server('hub').with_bluepill_cfg_source('foo')
+    end
+  end
+
 end

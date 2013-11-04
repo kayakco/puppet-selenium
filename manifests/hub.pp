@@ -5,6 +5,8 @@ class selenium::hub(
   $config_hash       = {}, # Hub JSON configuration options.
   $config_source     = undef,
   $config_content    = undef,
+  $bluepill_cfg_content = undef,
+  $bluepill_cfg_source  = undef,
 ){
   include selenium::common
 
@@ -17,14 +19,16 @@ class selenium::hub(
   }
   ->
   selenium::server { 'hub':
-    selenium_args     => ['-role','hub','-hubConfig',$configfile],
-    java_command      => $conf::java_command,
-    java_classname    => $conf::java_classname,
-    java_args         => $java_args,
-    system_properties => $system_properties,
-    env_vars          => $env_vars,
-    subscribe         => File[$configfile],
-    require           => Class['Selenium::Common'],
+    selenium_args        => ['-role','hub','-hubConfig',$configfile],
+    java_command         => $conf::java_command,
+    java_classname       => $conf::java_classname,
+    java_args            => $java_args,
+    system_properties    => $system_properties,
+    env_vars             => $env_vars,
+    bluepill_cfg_content => $bluepill_cfg_content,
+    bluepill_cfg_source  => $bluepill_cfg_source,
+    subscribe            => File[$configfile],
+    require              => Class['Selenium::Common'],
   }
 
   if $config_source != undef {

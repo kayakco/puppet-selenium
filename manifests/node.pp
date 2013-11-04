@@ -12,6 +12,9 @@ class selenium::node(
   $config_hash          = {},
   $config_source        = undef,
   $config_content       = undef,
+
+  $bluepill_cfg_content = undef,
+  $bluepill_cfg_source  = undef,
 ){
   include selenium::common
   include selenium::node::display
@@ -44,14 +47,16 @@ class selenium::node(
   }
 
   selenium::server { 'node':
-    selenium_args     => ['-role','node','-nodeConfig',$config_file],
-    java_command      => $conf::java_command,
-    java_classname    => $conf::java_classname,
-    java_args         => $java_args,
-    system_properties => $system_properties,
-    env_vars          => merge({ 'DISPLAY' => ':0' }, $env_vars ),
-    subscribe         => File[$config_file],
-    require           => Class['Selenium::Common']
+    selenium_args        => ['-role','node','-nodeConfig',$config_file],
+    java_command         => $conf::java_command,
+    java_classname       => $conf::java_classname,
+    java_args            => $java_args,
+    system_properties    => $system_properties,
+    env_vars             => merge({ 'DISPLAY' => ':0' }, $env_vars ),
+    bluepill_cfg_content => $bluepill_cfg_content,
+    bluepill_cfg_source  => $bluepill_cfg_source,
+    subscribe            => File[$config_file],
+    require              => Class['Selenium::Common']
   }
 
   if $install_chromedriver {

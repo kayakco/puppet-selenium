@@ -1,14 +1,16 @@
 require 'spec_helper'
 
 describe 'selenium::server' do
-  context 'without java class' do
-    let :pre_condition do
-<<PRE
+  STUB_JAR = <<EOF
 class selenium::common::jar {
- $path = '/s.jar'
+  $path = '/s.jar'
 }
-PRE
-end
+EOF
+  STUB_JAVA = "class myjava{}"
+
+  context 'without java class' do
+    let :pre_condition do STUB_JAR end
+
     let :title do 'foo' end
     let :params do { :java_classname => 'UNDEFINED' } end
 
@@ -28,11 +30,8 @@ class selenium::conf {
  $logdir = '/l'
  $rundir = '/r'
 }
-class selenium::common::jar {
- $path = '/s.jar'
-}
-class myjava {
-}
+#{STUB_JAR}
+#{STUB_JAVA}
 PP
     end
 
@@ -64,6 +63,29 @@ CMD
         :pidfile      => '/r/foo.pid',
       })
     end
-
   end
+
+  context 'pass blupill_cfg_content' do
+    let :params do
+      { :bluepill_cfg_content => 'foo', :java_classname => 'myjava' }
+    end
+    let :pre_condition do "#{STUB_JAVA}\n#{STUB_JAR}" end
+    let :title do 'derp' end
+    it do
+      should contain_bluepill__simple_app('selenium-derp').with_config_content('foo')
+    end
+  end
+
+  context 'pass blupill_cfg_source' do
+    let :params do
+      { :bluepill_cfg_source => 'foo', :java_classname => 'myjava' }
+    end
+    let :pre_condition do "#{STUB_JAVA}\n#{STUB_JAR}" end
+    let :title do 'derp' end
+
+    it do
+      should contain_bluepill__simple_app('selenium-derp').with_config_source('foo')
+    end
+  end
+
 end

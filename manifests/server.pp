@@ -5,6 +5,8 @@ define selenium::server(
   $java_command      = 'java', # Java command to run
   $java_classname    = 'java', # Name of a Java class to require
   $selenium_args     = [],     # Array of arguments to pass to selenium jar
+  $bluepill_cfg_content = undef,
+  $bluepill_cfg_source  = undef,
 ){
 
   include selenium::common
@@ -27,6 +29,8 @@ define selenium::server(
       'copytruncate' => true,
       'rotate'       => 2
     },
+    config_content    => $bluepill_cfg_content,
+    config_source     => $bluepill_cfg_source,
     require           => [User[$conf::user_name],File[$conf::install_dir]],
   }
 
