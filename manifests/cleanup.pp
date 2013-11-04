@@ -12,10 +12,11 @@ class selenium::cleanup{
   }
   ->
   cron { 'selenium-cleanup':
-    command     => $script,
+    command     => "${script} &>/tmp/selenium-cleanup.log",
     user        => $conf::user_name,
     environment => ['PATH=/bin:/usr/bin:/sbin:/usr/sbin'],
     hour        => 23,
+    minute      => 0,
   }
 
 }

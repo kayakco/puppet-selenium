@@ -19,7 +19,7 @@ PRE
       :source => 'puppet:///modules/selenium/cleanup.sh',
     })
     should contain_cron('selenium-cleanup').with({
-      :command => '/i/cleanup.sh',
+      :command => '/i/cleanup.sh &>/tmp/selenium-cleanup.log',
       :user    => 'foo',
     })
   end
