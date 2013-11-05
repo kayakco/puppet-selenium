@@ -1,4 +1,4 @@
-# Single place to define default settings for node, hub, and regular.
+# Single place to define common settings for node and hub.
 class selenium::conf(
   $version        = '2.33.0',
   $manage_user    = true,
