@@ -5,6 +5,7 @@ describe 'selenium::node::display::headed::autologin' do
 <<PP
 class selenium::conf {
   $user_name = 'u'
+  $user_options = {}
 }
 PP
   end
@@ -14,17 +15,20 @@ PP
       :path   => '/etc/lightdm/lightdm.conf',
       :section => 'SeatDefaults'
     }
+
     {
       'guest' => false,
       'user' => 'u',
       'user-timeout' => 0,
       'session' => 'lightdm-autologin'
     }.each_pair do |name,val|
-      should contain_ini_setting(name).with(defaults.merge({
+      expected = defaults.merge(
         :setting => "autologin-#{name}",
-        :value   => val,
-      }))
+        :value => val
+      )
+      should contain_ini_setting(name).with(expected)
       should contain_package('lightdm')
+      should contain_exec('add-selenium-user-to-nopasswdlogin-group').with_command('adduser u nopasswdlogin')
     end
   end
 end

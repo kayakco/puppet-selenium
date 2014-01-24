@@ -2,6 +2,13 @@ class selenium::node::display::headed::autologin {
 
   include selenium::conf
 
+  exec { 'add-selenium-user-to-nopasswdlogin-group':
+    path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+    unless  => "groups ${conf::user_name} | grep nopasswdlogin",
+    command => "adduser ${conf::user_name} nopasswdlogin",
+    require => User[$conf::user_name]
+  }
+
   package { 'lightdm':
     ensure => installed,
   }
