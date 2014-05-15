@@ -24,8 +24,8 @@ for regex in \
   "/tmp/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}" \
   "/tmp/\.org\.chromium\.Chromium\.[a-z0-9A-Z]{6}" \
   "/tmp/\.com\.google\.Chrome\.[a-z0-9A-Z]{6}" \
-  "/tmp/anonymous[0-9]{19}webdriver-profile" \
-  "/tmp/webdriver[0-9]{19}duplicated"; do
+  "/tmp/anonymous[0-9]{10,}webdriver-profile" \
+  "/tmp/webdriver[0-9]{10,}duplicated"; do
 
   find /tmp -maxdepth 1 \
             -regextype posix-egrep \
