@@ -23,10 +23,10 @@ PP
        '/s/logs',
        '/s/run'].each do |dir|
         should contain_file(dir).with({
-          :ensure => 'directory',
-          :mode   => '0755',
-          :owner  => 'foo',
-          :group  => 'bar',
+          :ensure  => 'directory',
+          :owner   => 'foo',
+          :group   => 'bar',
+          :recurse => true,
         })
       end
     end

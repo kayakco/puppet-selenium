@@ -3,7 +3,7 @@ class selenium::common{
   include selenium::conf
   include selenium::common::jar
 
-  ensure_supported({'Ubuntu' => ['12'],'CentOS' => ['6']},true)
+  ensure_supported({'Ubuntu' => ['12'], 'CentOS' => ['6']}, true)
 
   if $conf::manage_user {
     include selenium::common::user
@@ -13,10 +13,10 @@ class selenium::common{
           $conf::rundir,
           $conf::logdir,
           $conf::confdir]:
-    ensure => directory,
-    mode   => '0755',
-    owner  => $conf::user_name,
-    group  => $conf::user_group,
+    ensure  => directory,
+    owner   => $conf::user_name,
+    group   => $conf::user_group,
+    recurse => true,
   }
 
   if $conf::cleanup {

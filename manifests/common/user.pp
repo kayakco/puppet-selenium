@@ -9,4 +9,5 @@ class selenium::common::user{
   create_resources('r9util::system_user',
     { "${conf::user_name}" => $conf::user_options },
     $defaults)
+
 }

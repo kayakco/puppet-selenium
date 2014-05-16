@@ -32,7 +32,7 @@ define selenium::server(
     },
     config_content    => $bluepill_cfg_content,
     config_source     => $bluepill_cfg_source,
-    require           => [User[$conf::user_name],File[$conf::install_dir]],
+    require           => [User[$conf::user_name], File[$conf::install_dir]],
   }
 
   if $java_classname == 'UNDEFINED' {

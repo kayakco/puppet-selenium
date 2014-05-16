@@ -1,4 +1,6 @@
-class selenium::cleanup{
+class selenium::cleanup(
+  $days_old = 7,
+){
   include selenium::conf
 
   $script = "${conf::install_dir}/cleanup.sh"
@@ -12,7 +14,7 @@ class selenium::cleanup{
   }
   ->
   cron { 'selenium-cleanup':
-    command     => "${script} &>/tmp/selenium-cleanup.log",
+    command     => "${script} ${days_old} &>/tmp/selenium-cleanup.log",
     user        => $conf::user_name,
     environment => ['PATH=/bin:/usr/bin:/sbin:/usr/sbin'],
     hour        => 23,
