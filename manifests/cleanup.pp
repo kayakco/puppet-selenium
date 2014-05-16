@@ -5,6 +5,10 @@ class selenium::cleanup(
 
   $script = "${conf::install_dir}/cleanup.sh"
 
+  if ! is_integer($days_old) {
+    fail("\$days_old parameter must be an integer, got: \"${days_old}\"")
+  }
+
   file { $script:
     ensure => file,
     owner  => $conf::user_name,

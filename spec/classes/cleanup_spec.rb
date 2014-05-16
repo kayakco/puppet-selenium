@@ -35,4 +35,14 @@ PRE
       )
     end
   end
+
+  context 'days_old param not integer' do
+    let :params do { :days_old => 'foo' } end
+
+    it do
+      expect {
+        should contain_cron('selenium-cleanup')
+      }.to raise_error(Puppet::Error, /must be an integer, got: "foo"/)
+    end
+  end
 end
