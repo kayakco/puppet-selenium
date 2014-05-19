@@ -5,7 +5,7 @@ class selenium::cleanup(
 
   $script = "${conf::install_dir}/cleanup.sh"
 
-  if ! is_integer($days_old) {
+  if "${days_old}" !~ /\A\d+\z/ {
     fail("\$days_old parameter must be an integer, got: \"${days_old}\"")
   }
 
