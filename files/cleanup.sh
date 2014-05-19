@@ -18,7 +18,7 @@ fi
 killall --verbose \
   --signal $SIGNAL \
   --older-than "${HOURS_OLD}h" \
-  chromedriver firefox chrome
+  chromedriver firefox chrome "/opt/google/chrome/chrome"
 
 MINS_OLD=$(( $HOURS_OLD * 60 ))
 
