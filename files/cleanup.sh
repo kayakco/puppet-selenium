@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [[ $# -ge 1 ]]; then
-  DAYS_OLD=$1
+  HOURS_OLD=$1
 else
-  DAYS_OLD=7
+  HOURS_OLD=$(( 24 * 7 )) # Default to 7 days
 fi
 
 if [[ -z $CLEANUP_NOOP ]]; then
@@ -17,8 +17,10 @@ fi
 
 killall --verbose \
   --signal $SIGNAL \
-  --older-than "${DAYS_OLD}d" \
+  --older-than "${HOURS_OLD}h" \
   chromedriver firefox chrome
+
+MINS_OLD=$(( $HOURS_OLD * 60 ))
 
 for regex in \
   "/tmp/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}" \
@@ -31,6 +33,6 @@ for regex in \
             -regextype posix-egrep \
             -regex "${regex}" \
             -type d \
-            -mtime "+${DAYS_OLD}" \
+            -mmin "+${MINS_OLD}" \
             $ACTION
 done

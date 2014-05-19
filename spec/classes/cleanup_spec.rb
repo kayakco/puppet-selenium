@@ -20,24 +20,24 @@ PRE
         :source => 'puppet:///modules/selenium/cleanup.sh',
       })
       should contain_cron('selenium-cleanup').with({
-        :command => '/i/cleanup.sh 7 &>/tmp/selenium-cleanup.log',
+        :command => '/i/cleanup.sh 72 &>/tmp/selenium-cleanup.log',
         :user    => 'foo',
       })
     end
   end
 
   context 'override days_old param' do
-    let :params do { :days_old => 2 } end
+    let :params do { :hours_old => 5 } end
 
     it do
       should contain_cron('selenium-cleanup').with(
-        :command => '/i/cleanup.sh 2 &>/tmp/selenium-cleanup.log'
+        :command => '/i/cleanup.sh 5 &>/tmp/selenium-cleanup.log'
       )
     end
   end
 
   context 'days_old param not integer' do
-    let :params do { :days_old => 'foo' } end
+    let :params do { :hours_old => 'foo' } end
 
     it do
       expect {
