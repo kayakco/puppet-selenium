@@ -21,7 +21,7 @@ class selenium::cleanup(
     command     => "${script} ${hours_old} &>/tmp/selenium-cleanup.log",
     user        => $conf::user_name,
     environment => ['PATH=/bin:/usr/bin:/sbin:/usr/sbin'],
-    hour        => 23,
+    hour        => '*',
     minute      => 0,
   }
 

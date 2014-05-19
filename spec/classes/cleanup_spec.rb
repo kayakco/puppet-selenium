@@ -22,6 +22,8 @@ PRE
       should contain_cron('selenium-cleanup').with({
         :command => '/i/cleanup.sh 72 &>/tmp/selenium-cleanup.log',
         :user    => 'foo',
+        :hour    => '*',
+        :minute  => '0',
       })
     end
   end
