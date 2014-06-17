@@ -2,10 +2,15 @@
 class selenium::common::jar{
   include selenium::conf
 
-  $filename = "selenium-server-standalone-${conf::version}.jar"
-  $jar_url = "http://selenium.googlecode.com/files/${filename}"
+  $version  = $conf::version
+  $filename = "selenium-server-standalone-${version}.jar"
+  $host     = 'http://selenium-release.storage.googleapis.com'
 
-  $path = "${conf::install_dir}/${filename}"
+  $templ = '<%= @version.split(".").first(2) * "." %>'
+  $major_minor_version = inline_template($templ)
+
+  $jar_url = "${host}/${major_minor_version}/${filename}"
+  $path    = "${conf::install_dir}/${filename}"
 
   r9util::download { $jar_url:
     path    => $path,

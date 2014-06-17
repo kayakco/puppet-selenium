@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'selenium::node::chromedriver' do
   before :all do
-    @urlbase = 'http://chromedriver.googlecode.com/files'
+    @urlbase = 'http://chromedriver.storage.googleapis.com'
   end
 
   context '64bit arch' do
@@ -22,14 +22,16 @@ PP
   end
 
     let :facts do
-      {:r9util_download_curl_version => '1',
-        :architecture => 'amd64' }
+      { 
+        :r9util_download_curl_version => '1',
+        :architecture => 'amd64'
+      }
     end
 
     it do
-      zipfile = 'chromedriver_linux64_2.4.zip'
+      zipfile = 'chromedriver_linux64.zip'
       should contain_r9util__download('download-driver').with({
-        :url => File.join(@urlbase,zipfile),
+        :url => File.join(@urlbase, '2.4', zipfile),
         :path => "/s/#{zipfile}",
       })
       should contain_file("/s/#{zipfile}").with({
@@ -73,9 +75,9 @@ include selenium::conf
 PP
     end
     it do
-      zipfile = 'chromedriver_linux32_4.3.zip'
+      zipfile = 'chromedriver_linux32.zip'
       should contain_r9util__download('download-driver').with({
-        :url => File.join(@urlbase,zipfile),
+        :url => File.join(@urlbase, '4.3', zipfile),
         :path => "/s/#{zipfile}",
       })
       should contain_file("/s/#{zipfile}")
