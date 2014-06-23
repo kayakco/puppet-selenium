@@ -1,5 +1,7 @@
 # Installs selenium server standalone jar
-class selenium::common::jar{
+class selenium::common::jar(
+  $md5sum = undef,
+){
   include selenium::conf
 
   $version  = $conf::version
@@ -14,6 +16,7 @@ class selenium::common::jar{
 
   r9util::download { $jar_url:
     path    => $path,
+    md5sum  => $md5sum,
     require => File[$conf::install_dir]
   }
   ->

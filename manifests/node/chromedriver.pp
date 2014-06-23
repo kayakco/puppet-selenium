@@ -1,6 +1,7 @@
 # Installs chromedriver on a node
 class selenium::node::chromedriver(
   $version = $selenium::node::chromedriver_version,
+  $md5sum  = undef,
 ){
 
   $arch = $::architecture ? {
@@ -15,9 +16,10 @@ class selenium::node::chromedriver(
   $path      = "${conf::install_dir}/chromedriver"
 
   r9util::download { 'download-driver':
-    url    => "${host}/${version}/${filename}",
-    path   => $zippath,
-    before => File[$path],
+    url     => "${host}/${version}/${filename}",
+    path    => $zippath,
+    md5sum  => $md5sum,
+    before  => File[$path],
   }
   ->
   file { $zippath:
