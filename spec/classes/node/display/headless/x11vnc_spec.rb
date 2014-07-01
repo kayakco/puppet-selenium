@@ -9,10 +9,16 @@ describe 'selenium::node::display::headless::x11vnc' do
   end
 
   context 'CentOS' do
-    let :facts do { :operatingsystem => 'CentOS' } end
+    let :facts do 
+      {
+        :operatingsystem => 'CentOS',
+        :operatingsystemrelease => '6.3',
+      }
+    end
+
     it do
       should contain_package('x11vnc')
-      should include_class('epel')
+      should contain_class('epel')
     end
   end
 end

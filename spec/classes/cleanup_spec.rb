@@ -19,6 +19,7 @@ PRE
         :mode   => '0755',
         :source => 'puppet:///modules/selenium/cleanup.sh',
       })
+
       should contain_cron('selenium-cleanup').with({
         :command => '/i/cleanup.sh 72 &>/tmp/selenium-cleanup.log',
         :user    => 'foo',
@@ -43,7 +44,7 @@ PRE
 
     it do
       expect {
-        should contain_cron('selenium-cleanup')
+        should compile
       }.to raise_error(Puppet::Error, /must be an integer, got: "foo"/)
     end
   end

@@ -2,8 +2,12 @@ require 'spec_helper'
 
 describe 'selenium::node::display::headless::xvfb_display' do
   let :facts do
-    { :operatingsystem => 'CentOS' }
+    {
+      :operatingsystem => 'CentOS',
+      :operatingsystemrelease => '6.3',
+    }
   end
+
   let :pre_condition do
     <<-PP
     class selenium::conf {
@@ -29,7 +33,7 @@ describe 'selenium::node::display::headless::xvfb_display' do
     end
 
     it do
-      should include_class('selenium::node::display::headless::xvfb')
+      should contain_class('selenium::node::display::headless::xvfb')
       should contain_bluepill__simple_app('xvfb-foo').with({
         :user    => 'u',
         :group   => 'g',
@@ -37,7 +41,7 @@ describe 'selenium::node::display::headless::xvfb_display' do
         :pidfile => '/r/xvfb-foo.pid',
         :start_command => 'Xvfb :99 -nolisten tcp -fbdir /r/xvfb -screen 0 10x20x23',
       })
-      should include_class('selenium::node::display::headless::x11vnc')
+      should contain_class('selenium::node::display::headless::x11vnc')
       should contain_bluepill__simple_app('x11vnc-foo').with({
         :user    => 'u',
         :group   => 'g',
@@ -100,7 +104,7 @@ describe 'selenium::node::display::headless::xvfb_display' do
     let :params do { :vnc => false } end
 
     it do
-      should_not include_class('selenium::node::display::headless::x11vnc')
+      should_not contain_class('selenium::node::display::headless::x11vnc')
       should_not contain_bluepill__simple_app('x11vnc-foo')
     end
   end

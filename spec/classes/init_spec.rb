@@ -16,24 +16,24 @@ describe 'selenium' do
   context 'not the hub' do
     let :params do { :hub_host => 'foo' } end
     it do
-      should include_class('selenium::node')
-      should_not include_class('selenium::hub')
+      should contain_class('selenium::node')
+      should_not contain_class('selenium::hub')
     end
   end
 
   context 'hostname matches hub setting' do
     let :params do { :hub_host => 'derp' } end
     it do
-      should include_class('selenium::node')
-      should include_class('selenium::hub')
+      should contain_class('selenium::node')
+      should contain_class('selenium::hub')
     end
   end
 
   context 'fqdn matches hub setting' do
     let :params do { :hub_host => 'derp.com' } end
     it do
-      should include_class('selenium::node')
-      should include_class('selenium::hub')
+      should contain_class('selenium::node')
+      should contain_class('selenium::hub')
     end
   end
 end

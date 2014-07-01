@@ -24,7 +24,7 @@ class selenium::conf {
 
   context 'with defaults' do
     it do
-      should include_class('selenium::conf')
+      should contain_class('selenium::conf')
       should contain_r9util__download(url).with({
         :path => file,
       })

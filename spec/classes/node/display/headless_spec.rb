@@ -1,8 +1,11 @@
 require 'spec_helper'
 
 describe 'selenium::node::display::headless' do
-  let :facts do
-    { :operatingsystem => 'CentOS' }
+  let :facts do 
+    {
+      :operatingsystem => 'CentOS',
+      :operatingsystemrelease => '6.3',
+    }
   end
 
   let :params do
@@ -16,7 +19,7 @@ describe 'selenium::node::display::headless' do
   end
 
   it do
-    should include_class('selenium::node::display::headless::xvfb')
+    should contain_class('selenium::node::display::headless::xvfb')
     should contain_selenium__node__display__headless__xvfb_display('main').with({
       :display => '99',
       :width => '100',

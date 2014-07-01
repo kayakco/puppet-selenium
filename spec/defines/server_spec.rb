@@ -16,7 +16,7 @@ EOF
 
     it 'should warn about java class' do
       should contain_bluepill__app('selenium-foo')
-      should_not include_class('java')
+      should_not contain_class('java')
     end
   end
 
@@ -48,7 +48,7 @@ PP
     end
 
     it do
-      should include_class('myjava')
+      should contain_class('myjava')
       start_command = <<CMD
 /usr/bin/env e2=2\\ e /tmp/the\\ java -Xmx800m \
 -Dp.q=r -jar /s.jar a b c

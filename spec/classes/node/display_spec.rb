@@ -11,8 +11,8 @@ describe 'selenium::node::display' do
     end
 
     it do
-      should include_class('selenium::node::display::headless')
-      should_not include_class('selenium::node::display::headed')
+      should contain_class('selenium::node::display::headless')
+      should_not contain_class('selenium::node::display::headed')
     end
   end
 
@@ -22,8 +22,8 @@ describe 'selenium::node::display' do
     end
 
     it do
-      should include_class('selenium::node::display::headed')
-      should_not include_class('selenium::node::display::headless')
+      should contain_class('selenium::node::display::headed')
+      should_not contain_class('selenium::node::display::headless')
     end
 
   end

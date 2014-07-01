@@ -15,9 +15,9 @@ PP
     end
 
     it do
-      should include_class('selenium::conf')
-      should include_class('selenium::common::jar')
-      should include_class('selenium::common::user')
+      should contain_class('selenium::conf')
+      should contain_class('selenium::common::jar')
+      should contain_class('selenium::common::user')
       ['/s',
        '/s/conf',
        '/s/logs',
@@ -42,7 +42,7 @@ PP
     end
 
     it do
-      should_not include_class('selenium::common::user')
+      should_not contain_class('selenium::common::user')
     end
   end
 end

@@ -30,8 +30,8 @@ PP
       }
     end
     it do
-      should_not include_class('selenium::node::chromedriver')
-      should include_class('selenium::node::display')
+      should_not contain_class('selenium::node::chromedriver')
+      should contain_class('selenium::node::display')
       json = <<JSON
 {
   "configuration": {
@@ -70,8 +70,8 @@ JSON
       }
     end
     it do
-      should include_class('selenium::node::display')
-      should include_class('selenium::node::chromedriver')
+      should contain_class('selenium::node::display')
+      should contain_class('selenium::node::chromedriver')
       should contain_selenium__server('node').with_env_vars({'DISPLAY' => ':1' })
     end
   end
