@@ -23,7 +23,6 @@ PP
 
     let :facts do
       { 
-        :r9util_download_curl_version => '1',
         :architecture => 'amd64'
       }
     end
@@ -59,13 +58,9 @@ PP
   end
 
   context '32bit arch' do
-    let :facts do
-      {:r9util_download_curl_version => '1',
-        :architecture => 'i586' }
-    end
-    let :params do
-      {:version => '4.3'}
-    end
+    let :facts do { :architecture => 'i586' } end
+    let :params do {:version => '4.3'} end
+
     let(:pre_condition) do
 <<PP
 class selenium::conf {
@@ -74,6 +69,7 @@ class selenium::conf {
 include selenium::conf
 PP
     end
+
     it do
       zipfile = 'chromedriver_linux32.zip'
       should contain_r9util__download('download-driver').with({

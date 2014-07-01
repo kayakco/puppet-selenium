@@ -6,7 +6,6 @@ describe 'selenium' do
   end
   let :facts do
     {
-      :r9util_download_curl_version => '2',
       :operatingsystem              => 'Ubuntu',
       :hostname                     => 'derp',
       :fqdn                         => 'derp.com',

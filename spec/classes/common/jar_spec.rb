@@ -13,8 +13,6 @@ class selenium::conf {
 "
   }
 
-  let(:facts) do { :r9util_download_curl_version => '1' } end
-
   let(:url) do
     'http://selenium-release.storage.googleapis.com/' << 
     '31.4/selenium-server-standalone-31.4.3.jar'

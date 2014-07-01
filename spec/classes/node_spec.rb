@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe 'selenium::node' do
-  let :facts do
-    { :r9util_download_curl_version => '2',:operatingsystem => 'Ubuntu' }
-  end
   let :pre_condition do
 <<PP
 class { 'selenium::conf':

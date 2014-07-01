@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe 'selenium::common' do
-  let(:facts) do { :r9util_download_curl_version => '1' } end
-
   context 'mange_user is true' do
     let :pre_condition do
 <<PP
