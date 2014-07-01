@@ -42,3 +42,4 @@ DEPENDENCIES
   puppet (~> 3.1.1)
   puppet-lint
   puppetlabs_spec_helper
+  rspec-puppet
