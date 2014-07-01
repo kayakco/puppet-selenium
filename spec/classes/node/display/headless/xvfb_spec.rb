@@ -8,10 +8,17 @@ describe 'selenium::node::display::headless::xvfb' do
     end
   end
 
-  context 'CentOS' do
-    let :facts do { :operatingsystem => 'CentOS' } end
+  context 'CentOS 6.3' do
+    let :facts do 
+      {
+        :operatingsystem => 'CentOS',
+        :operatingsystemrelease => '6.3',
+      }
+    end
+
     it do
       should contain_package('xorg-x11-server-Xvfb')
+      should contain_package('libXfont').that_comes_before('Package[xorg-x11-server-Xvfb]')
     end
   end
 end

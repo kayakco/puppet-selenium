@@ -13,6 +13,10 @@ class selenium::node::display::headless::xvfb{
     ensure => installed,
   }
 
+  if $::operatingsystem == 'CentOS' {
+    package { 'libXfont': } -> Package[$package]
+  }
+
   $fbdir = "${conf::rundir}/xvfb"
 
   file { "${conf::rundir}/xvfb":
