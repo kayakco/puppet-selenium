@@ -9,7 +9,7 @@ class selenium::common::jar(
 
   include selenium::conf
 
-  $path      = "${conf::install_dir}/selenium-server-standalone.jar"
+  $path = "${conf::install_dir}/selenium-server-standalone.jar"
 
   file { $path:
     ensure => link,
