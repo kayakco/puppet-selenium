@@ -55,7 +55,7 @@ class selenium::node(
     env_vars             => merge({ 'DISPLAY' => ':0' }, $env_vars ),
     bluepill_cfg_content => $bluepill_cfg_content,
     bluepill_cfg_source  => $bluepill_cfg_source,
-    subscribe            => File[$config_file],
+    subscribe            => File[$config_file, $selenium::common::jar::path],
     require              => Class['Selenium::Common']
   }
 

@@ -1,44 +1,59 @@
-# Installs selenium server standalone jar
+# By default, downloads the selenium server standalone jar from
+# Google cloud storage.
 class selenium::common::jar(
-  $md5sum = undef,
-  $source = undef,
+  $download         = true,
+  $download_version = '2.41.0',
+  $download_md5sum  = undef,
+  $custom_path      = undef,
 ){
 
   include selenium::conf
 
-  $version  = $conf::version
-  $filename = "selenium-server-standalone-${version}.jar"
-  $path     = "${conf::install_dir}/${filename}"
+  $path      = "${conf::install_dir}/selenium-server-standalone.jar"
 
   file { $path:
-    owner => $conf::user_name,
-    group => $conf::user_group,
-    mode  => '0644',
+    ensure => link,
+    owner  => $conf::user_name,
+    group  => $conf::user_group,
   }
 
-  if $source == undef {
+  if $download {
     $host     = 'http://selenium-release.storage.googleapis.com'
+    $version   = $download_version
 
     $templ = '<%= @version.split(".").first(2) * "." %>'
     $major_minor_version = inline_template($templ)
 
-    $jar_url = "${host}/${major_minor_version}/${filename}"
+    $download_filename = "selenium-server-standalone-${version}.jar"
+    $download_path = "${conf::install_dir}/${download_filename}"
+    $jar_url = "${host}/${major_minor_version}/${download_filename}"
 
     r9util::download { $jar_url:
-      path    => $path,
-      md5sum  => $md5sum,
+      path    => $download_path,
+      md5sum  => $download_md5sum,
       require => File[$conf::install_dir],
-      before  => File[$path],
+      before  => File[$download_path],
     }
 
-  } else {
-
-    notify { 'selenium-version-warning':
-      message => "Using ${source} for ${filename}, version could be wrong",
+    file { $download_path:
+      owner  => $conf::user_name,
+      group  => $conf::user_group,
+      mode   => '0644',
+      before => File[$path],
     }
 
     File[$path] {
-      source => $source,
+      target => $download_path,
+    }
+  } else {
+
+    if $custom_path == undef {
+      fail('custom_path argument must be specified')
+
+    } else {
+      File[$path] {
+        target => $custom_path,
+      }
     }
   }
 
