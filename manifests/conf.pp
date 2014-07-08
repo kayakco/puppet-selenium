@@ -6,7 +6,7 @@ class selenium::conf(
   $java_command   = 'java',
   $java_classname = 'java',
   $install_dir    = '/usr/local/selenium',
-  $cleanup        = false,
+  $cleanup        = true,
 ){
   $user_group   = pick($user_options['group'], $user_name)
   $user_homedir = pick($user_options['homedir'], "/home/${user_name}")
