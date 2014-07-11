@@ -38,31 +38,32 @@ PP
     let :title do 'foo' end
     let :params do
       {
-        :env_vars => { 'e2' => '2 e' },
+        :env_vars => { 'e2' => '2 e', 'e1' => 'e1' },
         :java_args => ['-Xmx800m'],
-        :system_properties => {'p.q' => 'r'},
+        :system_properties => {'x.y' => 'z', 'p.q' => 'r'},
         :java_command => '/tmp/the java',
         :java_classname => 'myjava',
-        :selenium_args => ['a','b','c']
+        :selenium_args => ['a', 'b', 'c']
       }
     end
 
     it do
       should contain_class('myjava')
       start_command = <<CMD
-/usr/bin/env e2=2\\ e /tmp/the\\ java -Xmx800m \
--Dp.q=r -jar /s.jar a b c
+/usr/bin/env e1=e1 e2=2\\ e /tmp/the\\ java -Xmx800m \
+-Dp.q=r -Dx.y=z -jar /s.jar a b c
 CMD
       should contain_bluepill__simple_app('selenium-foo').with({
-        :service_name => 'selenium-foo',
-        :logfile      => '/l/foo.log',
-        :rotate_logs  => true,
+        :start_command => start_command.chomp,
+        :service_name  => 'selenium-foo',
+        :logfile       => '/l/foo.log',
+        :rotate_logs   => true,
         :logrotate_options => { 'copytruncate' => true,
                                 'rotate' => '2',
                                 'delaycompress' => false },
-        :user         => 'u',
-        :group        => 'g',
-        :pidfile      => '/r/foo.pid',
+        :user          => 'u',
+        :group         => 'g',
+        :pidfile       => '/r/foo.pid',
       })
     end
   end

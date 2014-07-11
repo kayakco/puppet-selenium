@@ -14,7 +14,10 @@ class selenium::node::display::headless::xvfb{
   }
 
   if $::operatingsystem == 'CentOS' {
-    package { 'libXfont': } -> Package[$package]
+
+    package { 'libXfont':
+      before => Package[$package],
+    }
   }
 
   $fbdir = "${conf::rundir}/xvfb"

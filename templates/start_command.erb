@@ -1,20 +1,91 @@
-<%=
+<%= # -*- mode: ruby -*-
+
+# This template should generate a properly-escaped command for
+# launching a Selenium server jar. It expects the following 
+# instance variables to be defined:
+#
+# @env_vars:     A hash of environment variables to set before
+#                launching the Selenium process. This is useful for,
+#                for example, the DISPLAY environment variable.
+#
+#                Eg. { 'DISPLAY' => ':1' }
+#
+# @java_command: Path to the Java command that should be used to
+#                launch the server.
+#
+#                Eg. '/usr/local/java/bin/java'
+#
+# @java_args:    An array of string arguments to pass to the JVM. Useful
+#                if you want to turn on GC logging or bump up heap space.
+#
+#                Eg. ['-Xmx512m']
+#
+# @system_properties: A hash of Java system properties to set. Useful for
+#                setting the path to the chromedriver, or turning on
+#                extra logging.
+#
+#                Eg. { 'webdriver.chrome.logfile' => '/tmp/chrome.log' }
+#
+# @selenium_args: An array of arguments to pass to the Selenium server 
+#                process.
+#
+#                Eg. ['-role', 'hub']
+#
 require 'shellwords'
 
-def esc(string)
-  Shellwords.escape(string)
+class Renderer
+  def render(env_vars, java_command, java_args, system_properties, jar, selenium_args)
+    [
+     '/usr/bin/env',
+     build_env_args(env_vars),
+     escape(java_command),
+     build_jvm_args(java_args, system_properties, jar),
+     escape_all(selenium_args),
+    ].flatten.join(' ')
+  end
+
+  def build_env_args(env_vars)
+    sort_and_map(env_vars) do |name, value|
+      "#{escape(name)}=#{escape(value)}"
+    end
+  end
+
+  def build_jvm_args(java_args, system_properties, jar)
+    system_props_array = sort_and_map(system_properties) do |name, value|
+      "-D#{escape(name)}=#{escape(value)}"
+    end
+
+    [
+     escape_all(java_args),
+     system_props_array,
+     '-jar',
+      escape(jar),
+    ].flatten
+  end
+
+  def escape_all(*args)
+    args.flatten.map { |arg| escape(arg) }
+  end
+
+  def escape(arg)
+    Shellwords.escape(arg)
+  end
+
+  # Sort hash by key and then map over key value pairs,
+  # so that arguments will always appear in predictable order.
+  def sort_and_map(hash, &block)
+    hash.sort_by { |key, value| key }.map(&block)
+  end
 end
 
 jar = scope.lookupvar('selenium::common::jar::path')
-raise 'Could not determine jar path!' if jar.nil?
 
-[ '/usr/bin/env',
-  @env_vars.map { |k,v| "#{esc(k)}=#{esc(v)}" },
-  esc(@java_command),
-  @java_args.map { |a| esc(a) },
-  @system_properties.map { |k,v| "-D#{esc(k)}=#{esc(v)}" },
-  '-jar',
-  esc(jar),
-  @selenium_args.map { |a| esc(a) },
-].flatten.join(' ')
+raise 'Could not determine selenium jar path!' if jar.nil?
+
+Renderer.new.render(@env_vars,
+                    @java_command,
+                    @java_args,
+                    @system_properties,
+                    jar,
+                    @selenium_args)
 -%>
