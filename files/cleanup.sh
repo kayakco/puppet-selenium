@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Array magic courtesy of:
+# http://unix.stackexchange.com/questions/29509/transform-an-array-into-arguments-of-a-command
+
 if [[ $# -ge 1 ]]; then
   HOURS_OLD=$1
 else
@@ -15,10 +18,18 @@ else
   ACTION="-print"
 fi
 
+to_kill=( chromedriver firefox chrome )
+
+for killfile in "/opt/google/chrome/chrome"; do
+  if [[ -f "${killfile}" ]]; then
+    to_kill=( "${to_kill[@]}" "${killfile}" )
+  fi
+done
+
 killall --verbose \
   --signal $SIGNAL \
   --older-than "${HOURS_OLD}h" \
-  chromedriver firefox chrome "/opt/google/chrome/chrome"
+  "${to_kill[@]}"
 
 MINS_OLD=$(( $HOURS_OLD * 60 ))
 
