@@ -18,7 +18,7 @@ describe 'selenium::node::display::headless::xvfb' do
 
     it do
       should contain_package('xorg-x11-server-Xvfb')
-      should contain_package('libXfont').that_comes_before('Package[xorg-x11-server-Xvfb]')
+      should contain_package('libXfont').with(:ensure => 'latest').that_comes_before('Package[xorg-x11-server-Xvfb]')
     end
   end
 end

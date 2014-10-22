@@ -16,6 +16,7 @@ class selenium::node::display::headless::xvfb{
   if $::operatingsystem == 'CentOS' {
 
     package { 'libXfont':
+      ensure => latest,
       before => Package[$package],
     }
   }
