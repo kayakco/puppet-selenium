@@ -11,7 +11,7 @@ fi
 
 if [[ -z $CLEANUP_NOOP ]]; then
   SIGNAL=15 # TERM
-  ACTION="-exec rm -rf {} ;"
+  ACTION="-print -a -exec rm -rf {} ;"
 else
   set -x
   SIGNAL=0 # NOOP
@@ -26,10 +26,16 @@ for killfile in "/opt/google/chrome/chrome"; do
   fi
 done
 
-killall --verbose \
-  --signal $SIGNAL \
-  --older-than "${HOURS_OLD}h" \
-  "${to_kill[@]}"
+if which killall >/dev/null && \
+  killall --help 2>&1 | grep "\-\-older\-than" >/dev/null; then
+
+  killall --verbose \
+    --signal $SIGNAL \
+    --older-than "${HOURS_OLD}h" \
+    "${to_kill[@]}"
+else
+  echo "killall is missing or too outdated to use, please upgrade!" >&2
+fi
 
 MINS_OLD=$(( $HOURS_OLD * 60 ))
 

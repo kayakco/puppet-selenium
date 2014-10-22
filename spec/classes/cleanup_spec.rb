@@ -7,6 +7,7 @@ class selenium::conf{
   $user_name = 'foo'
   $user_group = 'bar'
   $install_dir = '/i'
+  $logdir = '/l'
 }
 PRE
   end
@@ -21,7 +22,7 @@ PRE
       })
 
       should contain_cron('selenium-cleanup').with({
-        :command => '/i/cleanup.sh 72 &>/tmp/selenium-cleanup.log',
+        :command => '/i/cleanup.sh 3 &> /l/cleanup.log',
         :user    => 'foo',
         :hour    => '*',
         :minute  => '0',
@@ -34,7 +35,7 @@ PRE
 
     it do
       should contain_cron('selenium-cleanup').with(
-        :command => '/i/cleanup.sh 5 &>/tmp/selenium-cleanup.log'
+        :command => '/i/cleanup.sh 5 &> /l/cleanup.log'
       )
     end
   end

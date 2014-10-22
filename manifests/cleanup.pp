@@ -1,9 +1,10 @@
 class selenium::cleanup(
-  $hours_old = 72,
+  $hours_old = 3,
 ){
   include selenium::conf
 
   $script = "${conf::install_dir}/cleanup.sh"
+  $logfile = "${conf::logdir}/cleanup.log"
 
   if "${hours_old}" !~ /\A\d+\z/ {
     fail("\$hours_old parameter must be an integer, got: \"${hours_old}\"")
@@ -18,7 +19,7 @@ class selenium::cleanup(
   }
   ->
   cron { 'selenium-cleanup':
-    command     => "${script} ${hours_old} &>/tmp/selenium-cleanup.log",
+    command     => "${script} ${hours_old} &> ${logfile}",
     user        => $conf::user_name,
     environment => ['PATH=/bin:/usr/bin:/sbin:/usr/sbin'],
     hour        => '*',
