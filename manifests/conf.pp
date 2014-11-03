@@ -4,6 +4,7 @@ class selenium::conf(
   $user_name      = 'selenium',
   $user_options   = {},
   $java_command   = 'java',
+  $java_classpath = [],
   $java_classname = 'java',
   $install_dir    = '/usr/local/selenium',
   $cleanup        = true,

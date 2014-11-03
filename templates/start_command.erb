@@ -15,6 +15,10 @@
 #
 #                Eg. '/usr/local/java/bin/java'
 #
+# @java_classpath: An array of extra entries to add to the Java classpath.
+#
+#                Eg. ['/usr/local/custom-selenium-servlets.jar']
+#
 # @java_args:    An array of string arguments to pass to the JVM. Useful
 #                if you want to turn on GC logging or bump up heap space.
 #
@@ -67,7 +71,7 @@ class Renderer
   end
 
   def build_classpath(*entries)
-    escape_all(entries.flatten) * ':'
+    escape_all(entries.compact.flatten) * ':'
   end
 
   def escape_all(*args)

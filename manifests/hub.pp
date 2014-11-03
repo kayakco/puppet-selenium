@@ -21,6 +21,7 @@ class selenium::hub(
   selenium::server { 'hub':
     selenium_args        => ['-role','hub','-hubConfig',$configfile],
     java_command         => $conf::java_command,
+    java_classpath       => $conf::java_classpath,
     java_classname       => $conf::java_classname,
     java_args            => $java_args,
     system_properties    => $system_properties,
