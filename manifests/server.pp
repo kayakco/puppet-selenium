@@ -4,6 +4,7 @@ define selenium::server(
   $java_args         = [],     # Array of arguments to pass to jvm
   $java_command      = 'java', # Java command to run
   $java_classname    = 'java', # Name of a Java class to require
+  $java_classpath    = [],
   $selenium_args     = [],     # Array of arguments to pass to selenium jar
   $bluepill_cfg_content = undef,
   $bluepill_cfg_source  = undef,

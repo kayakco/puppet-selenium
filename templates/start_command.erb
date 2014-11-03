@@ -34,12 +34,12 @@
 require 'shellwords'
 
 class Renderer
-  def render(env_vars, java_command, java_args, system_properties, jar, selenium_args)
+  def render(env_vars, java_command, java_args, java_classpath, system_properties, jar, selenium_args)
     [
      '/usr/bin/env',
      build_env_args(env_vars),
      escape(java_command),
-     build_jvm_args(java_args, system_properties, jar),
+     build_jvm_args(java_args, java_classpath, system_properties, jar),
      escape_all(selenium_args),
     ].flatten.join(' ')
   end
@@ -50,17 +50,24 @@ class Renderer
     end
   end
 
-  def build_jvm_args(java_args, system_properties, jar)
+  def build_jvm_args(java_args, java_classpath, system_properties, jar)
     system_props_array = sort_and_map(system_properties) do |name, value|
       "-D#{escape(name)}=#{escape(value)}"
     end
 
+    classpath = build_classpath(java_classpath, jar)
+
     [
      escape_all(java_args),
      system_props_array,
-     '-jar',
-      escape(jar),
+     '-classpath',
+      classpath,
+     'org.openqa.grid.selenium.GridLauncher',
     ].flatten
+  end
+
+  def build_classpath(*entries)
+    escape_all(entries.flatten) * ':'
   end
 
   def escape_all(*args)
@@ -85,6 +92,7 @@ raise 'Could not determine selenium jar path!' if jar.nil?
 Renderer.new.render(@env_vars,
                     @java_command,
                     @java_args,
+                    @java_classpath,
                     @system_properties,
                     jar,
                     @selenium_args)

@@ -42,6 +42,7 @@ PP
         :java_args => ['-Xmx800m'],
         :system_properties => {'x.y' => 'z', 'p.q' => 'r'},
         :java_command => '/tmp/the java',
+        :java_classpath => ['/p.jar', 'my\\ libs'],
         :java_classname => 'myjava',
         :selenium_args => ['a', 'b', 'c']
       }
@@ -51,7 +52,7 @@ PP
       should contain_class('myjava')
       start_command = <<CMD
 /usr/bin/env e1=e1 e2=2\\ e /tmp/the\\ java -Xmx800m \
--Dp.q=r -Dx.y=z -jar /s.jar a b c
+-Dp.q=r -Dx.y=z -classpath /p.jar:my\ libs:/s.jar org.openqa.grid.selenium.GridLauncher a b c
 CMD
       should contain_bluepill__simple_app('selenium-foo').with({
         :start_command => start_command.chomp,
@@ -90,5 +91,4 @@ CMD
       should contain_bluepill__simple_app('selenium-derp').with_config_source('foo')
     end
   end
-
 end
