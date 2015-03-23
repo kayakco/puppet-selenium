@@ -47,7 +47,7 @@ class selenium::node(
   }
 
   selenium::server { 'node':
-    selenium_args        => ['-role','node','-nodeConfig',$config_file],
+    selenium_args        => ['-role','node','-nodeConfig',$config_file,'-host',$fqdn],
     java_command         => $conf::java_command,
     java_classpath       => $conf::java_classpath,
     java_classname       => $conf::java_classname,
