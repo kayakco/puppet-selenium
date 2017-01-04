@@ -3,17 +3,31 @@
 # Array magic courtesy of:
 # http://unix.stackexchange.com/questions/29509/transform-an-array-into-arguments-of-a-command
 
+process_age_in_minutes(){
+  pid=$1
+  lstart="$( ps -o lstart= -p $pid )"
+  if [[ -z "$lstart" ]]; then
+    echo 0
+    return 0
+  fi
+
+  start=$( date -d "$lstart" +%s )
+  now=$( date +%s )
+  seconds=$(( $now - $start ))
+  echo $(( seconds / 60 ))
+}
+
 if [[ $# -ge 1 ]]; then
-  HOURS_OLD=$1
+  MINS_OLD=$1
 else
-  HOURS_OLD=$(( 24 * 7 )) # Default to 7 days
+  MINS_OLD=$(( 7 * 60 )) # Default to 6 hours
 fi
 
 if [[ -z $CLEANUP_NOOP ]]; then
-  SIGNAL=15 # TERM
+  SIGNAL=9 # KILL
   ACTION="-print -a -exec rm -rf {} ;"
 else
-  set -x
+#  set -x
   SIGNAL=0 # NOOP
   ACTION="-print"
 fi
@@ -26,18 +40,15 @@ for killfile in "/opt/google/chrome/chrome"; do
   fi
 done
 
-if which killall >/dev/null && \
-  killall --help 2>&1 | grep "\-\-older\-than" >/dev/null; then
-
-  killall --verbose \
-    --signal $SIGNAL \
-    --older-than "${HOURS_OLD}h" \
-    "${to_kill[@]}"
-else
-  echo "killall is missing or too outdated to use, please upgrade!" >&2
-fi
-
-MINS_OLD=$(( $HOURS_OLD * 60 ))
+for command in "${to_kill[@]}"
+do
+  for pid in $( ps -eopid=,comm=, | grep "${command}" | awk '{ print $1 }' ); do 
+    if [[ "$( process_age_in_minutes $pid )" -gt "$MINS_OLD" ]]; then
+      echo "Killing ${pid} $( ps -p $pid -oetime=,comm= )"
+      kill -$SIGNAL ${pid}
+    fi
+  done
+done
 
 for regex in \
   "/tmp/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}" \

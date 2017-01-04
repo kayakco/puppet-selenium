@@ -31,17 +31,17 @@ PRE
   end
 
   context 'override days_old param' do
-    let :params do { :hours_old => 5 } end
+    let :params do { :minutes_old => 50 } end
 
     it do
       should contain_cron('selenium-cleanup').with(
-        :command => '/i/cleanup.sh 5 &> /l/cleanup.log'
+        :command => '/i/cleanup.sh 50 &> /l/cleanup.log'
       )
     end
   end
 
   context 'days_old param not integer' do
-    let :params do { :hours_old => 'foo' } end
+    let :params do { :minutes_old => 'foo' } end
 
     it do
       expect {
